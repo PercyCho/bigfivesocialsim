@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Big 5 Simulation</title>
+        <link rel="icon" type="image/x-icon" href="favicon.png">
+        <style>
+            body{
+                background-color: rgb(255, 255, 255);
+                margin: 0;
+            }
+
+            #screen {
+                filter: blur(10px);
+            }
+
+            #people-screen {
+                text-align: center;
+            }
+
+            .person-box{
+                display: inline-block;
+                position: relative;
+                width: 155px;
+                border-radius: 10px;
+                border: solid 5px black;
+                height: 235px;
+                padding: 0.9%;
+                background-color: gray;
+                vertical-align: bottom;
+                margin: 5px;
+                text-align: center;
+            }
+
+            .person-name {
+                color: white;
+                text-align: center;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 28px;
+                margin-top: 4px;
+                /*height: 20%;*/
+            }
+
+            .info-box {
+                width: 100%;
+                height: 100%;
+                color: white;
+                font-size: 24px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin-top: -3%;
+                margin-left: -3%;
+                border: solid 5px rgb(0, 0, 0);
+                background-color: rgb(80, 80, 80);
+                cursor: pointer;
+                user-select: none;
+                /*border-radius: 20px;*/
+            }
+
+            #im-blutarskiez {
+                display: none;
+            }
+
+            #welcome-screen {
+                position: fixed;
+                top: 0;
+                left:0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0.5, 0.5, 0.5, 0.5);
+                z-index: 10;
+            }
+
+            #welcome-modal {
+                position: fixed;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 24px;
+                text-align: center;
+                width: 50%;
+                height: 50%;
+                /*margin-top: -50%;
+                margin-left: -50%;
+                lol*/
+                top: 25%;
+                left: 25%;
+                background-color: whitesmoke;
+                z-index: 11;
+                border-radius: 20px 0 20px 30px;
+                padding: 10px
+            }
+
+            .button {
+                padding: 10px;
+                font-size: 24px;
+                border-radius: 10px 0 10px 15px;
+                border: solid 5px black;
+                cursor: pointer;
+                box-shadow: 0px 0px 5px rgba(0.5, 0.5, 0.5, 0.5);
+                margin-bottom: 10px;
+            }
+
+            .button:hover{
+                box-shadow: 0px 0px 10px rgba(0.5, 0.5, 0.5, 0.5);
+                transform: scale(1.05);
+            }
+
+            .button:active{
+                box-shadow: 0px 0px 10px rgba(0.5, 0.5, 0.5, 0);
+                transform: scale(0.95);
+            }
+
+            .val-bar[value]::-webkit-progress-bar{
+                background-color: rgba(0.5, 0.5, 0.5, 0.5);
+
+            }
+
+            .val-bar[value]::-webkit-progress-value{
+                background-color: rgb(128, 128, 128);
+
+            }
+
+            .val-bar[value]{
+                -webkit-appearance: none;
+                appearance: none;
+                width: 50%;
+            }
+
+            .bar-e[value]::-webkit-progress-value {
+                background-color: #e65050;
+            }
+
+            .bar-a[value]::-webkit-progress-value {
+                background-color: #50e68c;
+            }
+
+            .bar-o[value]::-webkit-progress-value {
+                background-color: #c8e650;
+            }
+
+            .bar-c[value]::-webkit-progress-value {
+                background-color: #508ce6;
+            }
+            
+            .bar-n[value]::-webkit-progress-value {
+                background-color: #c850e6;
+            }
+
+            #control-screen {
+                width: 98%;
+                height: 195px;
+                padding: 1%;
+                background-color: aquamarine;
+                margin-bottom: 10px;
+                border: solid 5px black;
+                border-width: 0 0 5px 0;
+            }
+
+            .info-window {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                padding: 0 5px 3px 5px;
+                font-size: 24px;
+                border-radius: 10px 0 10px 15px;
+                border: solid 5px black;
+                background-color: white;
+            }
+
+            #modal {
+                display: none;
+                position: fixed;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 24px;
+                text-align: center;
+                width: 49%;
+                height: 49%;
+                /*margin-top: -50%;
+                margin-left: -50%;
+                lol*/
+                top: 25%;
+                left: 25%;
+                padding: 0.5%;
+                background-color: whitesmoke;
+                z-index: 11;
+                border-radius: 20px 0 20px 30px;
+            }
+
+            #close-modal {
+                position: fixed;
+                top: 0;
+                left:0;
+                width: 100%;
+                height: 100%;
+            }
+
+            #modal-left-arrow {
+                display: none;
+                position: fixed;
+                color: white;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 32px;
+                font-weight: bold;
+                vertical-align: middle;
+                text-align: center;
+                width: 2.5%;
+                height: 52.5%;
+                top: 25%;
+                left: 22.5%;
+                cursor: pointer;
+            }
+
+            #modal-right-arrow {
+                display: none;
+                position: fixed;
+                color: white;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 32px;
+                font-weight: bold;
+                vertical-align: middle;
+                text-align: center;
+                width: 2.5%;
+                height: 52.5%;
+                top: 25%;
+                left: 75%;
+                cursor: pointer;
+            }
+
+            #modal-name {
+                font-size: 32px;
+                font-weight: bold;
+            }
+
+            .modal-link:hover {
+                cursor: pointer;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="person-box" id="im-blutarskiez">
+            <div class="info-box">
+                <div class="person-name">blutarskiez</div>
+                <hr style="width: 80%">
+                E: <progress class="val-bar" value="40" max="100"></progress> lol<br>A: lol<br>O: lol<br>C: lol<br>N: lol
+            </div>
+        </div>
+        <div id="welcome-screen">
+            <div id="welcome-modal">
+                <h2>Welcome to my Big 5 Values Social Simulator!</h2>
+                How many people do you want to simulate?<br>
+                haha jk it's stuck on 36 until I get this to work lol<br>
+                <br>
+                <button id="start-simulation" onclick="startSimulation()" class="button">Confirm</button>
+            </div>
+            <div id="close-modal"></div>
+            <div id="modal-left-arrow" onclick="leftModalScroll()"><div style="display: table-cell;vertical-align: middle;text-align: center;user-select: none;">&lt;</div></div>
+            <div id="modal">
+                <div id="modal-name">Person <!--<span id="name-stat">-->-1<!--</span>--></div>
+                <hr style="width: 80%">
+                <div style="display:inline-block; vertical-align: middle; width: 25%;">
+                    <div id="modal-e-stats">E: <progress id="modal-e-bar" class="val-bar bar-e" value="100" max="100"></progress> <span id="e-stat">100</span></div>
+                    <div id="modal-a-stats">A: <progress id="modal-a-bar" class="val-bar bar-a" value="75" max="100"></progress> <span id="a-stat">75</span></div>
+                    <div id="modal-o-stats">O: <progress id="modal-o-bar" class="val-bar bar-o" value="50" max="100"></progress> <span id="o-stat">50</span></div>
+                    <div id="modal-c-stats">C: <progress id="modal-c-bar" class="val-bar bar-c" value="25" max="100"></progress> <span id="c-stat">25</span></div>
+                    <div id="modal-n-stats">N: <progress id="modal-n-bar" class="val-bar bar-n" value="0" max="100"></progress> <span id="n-stat">0</span></div>
+                </div>
+                <div style="display:inline-block; border-left:1px solid #9a9a9a; height:80%; vertical-align: middle;"></div>
+                <div style="display:inline-block; vertical-align: middle;max-width: 50%;">
+                    <div id="modal-hangout-list">Hung out with today: <span id="hangout-stat">None yet</span></div>
+                    <div id="modal-friend-list">Friends: <span id="friend-stat">None yet</span></div>
+                </div>
+            </div>
+            <div id="modal-right-arrow" onclick="rightModalScroll()"><div style="display: table-cell;vertical-align: middle;text-align: center;user-select: none;">&gt;</div></div>
+        </div>
+        <div id="screen">
+            <div id="control-screen">
+                <!--<span class="info-window">HHHH</span>-->
+                <button class="button" onclick="sortByE()">Sort by<br><span style="color:#e65050">Extraversion</span></button>&nbsp;
+                <button class="button" onclick="sortByA()">Sort by<br><span style="color:#50e68c">Agreeableness</span></button>&nbsp;
+                <button class="button" onclick="sortByO()">Sort by<br><span style="color:#c8e650;">Openness</span></button>&nbsp;
+                <button class="button" onclick="sortByC()">Sort by<br><span style="color:#508ce6">Contientiousness</span></button>
+                <br>
+                <button class="button" onclick="sortByN()">Sort by<br><span style="color:#c850e6">Neuroticism</span></button>&nbsp;
+                <button class="button" onclick="sortByHighAvg()">Sort by<br><span>Highest Average</span></button>&nbsp;
+                <button class="button" onclick="sortByVariance()">Sort by<br><span>Highest Variance</span></button>&nbsp;
+                <button class="button" onclick="sortByNum()">Sort by<br><span>Number</span></button>&nbsp;
+                <button class="button" id="itr-button" style="font-weight: bold;" onclick="nextIteration()">Next<br>Iteration</button>
+            </div>
+            <div id="people-screen">
+                <!--All the "people" will go here-->
+            </div>
+        </div>
+        <script src="index.js"></script>
+    </body>
+</html>
